@@ -1,0 +1,177 @@
+<div class="subheader-content">
+  <div class="title-subheader">Học tiếng nhật</div>
+  <div class="tab-header">
+      <div class="item-header tabalphabet{{key}}" ng-class="active"  ng-repeat="(key, value) in tabs" ng-click="changeType(key)">
+          <a class="title-item-header">{{ value }}</a>
+      </div>
+  </div>
+</div>
+
+
+<!-- MOBILE -->
+<!--<div class="subheader-content-mobile">-->
+  <!--<div class="tab-header">-->
+      <!--<div class="item-header tabalphabet{{key}} check $index"  ng-repeat="(key, value) in tabs by $index" ng-click="changeType(key)">-->
+          <!--<a class="title-item-header">{{ value }}</a>-->
+      <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!-- END MOBILE -->
+
+
+<div class="main-content">
+  <div class="sub-content">
+      <div ng-if="!isTest">
+          <div class="kana-item-alphabet alphabet-content-item{{kana.id}} code{{$index}}" ng-click="viewDetailAlphabet(kana.id)" ng-repeat="kana in ::datas track by $index" ng-class="::getClass(kana.id)">
+              <div class="center-alphabet">
+                  <div class="main" ng-if="!showKatakana">{{ ::kana.hiragana }}</div>
+                  <div class="main" ng-if="showKatakana">{{ ::kana.katakana }}</div>
+                  <div class="romanji">{{ ::kana.phatam }}</div>
+              </div>
+          </div>
+      </div>
+
+      <!-- BEGIN TEST -->
+      <div ng-if="isTest" class="test-alphabet">
+          <div class="content-test-alphabet">
+              <!-- SELECT  TEST HIRA & KANA-->
+              <div class="select-alphabet">
+                  <div class="item-name-alphabet hiragana-alphabet" ng-click="testAlphabet('hiragana')">
+                      <span class="title-name-alphabet">Hiragana</span>
+                  </div>
+                  <div class="item-name-alphabet katakana-alphabet" ng-click="testAlphabet('katakana')">
+                      <span class="title-name-alphabet">Katakana</span>
+                  </div>
+              </div>
+              <div class="item-test-alphabet">
+                  <div class="header-test-alphabet" ng-if="showTest && showNext != 3">
+                      <div class="progress progress-test-alphabet">
+                          <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="20">
+                          </div>
+                      </div>
+                      <div class="test-circle">{{trueAnswer}}/{{size}}</div>
+                  </div>
+                  <div class="item-content-alphabet" ng-if="showNext != 3">
+                        <div class="item-test-alphabet-1">
+                            <div class="question">
+                                Chữ <span class="question-value">{{questions}}</span> có phiên âm ra sao?
+                                <!-- Chữ <span class="question-value">{{testActive.question}}</span> có phiên âm ra sao? -->
+                                <!-- div class="sound-alphabet content-music-alphabet" ng-click="playAudio(testActive.romaji)">
+                                    <div class="music-alphabet glyphicon glyphicon-volume-up"></div>
+                                </div> -->
+                            </div>
+
+                            <div class="answer">
+                                <div ng-repeat="answer in answers" class="list-item card-choice testAlphabet{{answer.id}}" ng-click="chooseAnswer(answer.id, answer.noidung, answer.phatam, $event)">
+                                    <div class="box-card">
+                                        <span>{{answer.noidung}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-test-alphabet-2">
+                            <div class="question">
+                                <!-- Chữ <span class="question-value">{{testActive.question}}</span> có phiên âm ra sao? -->
+                                Chữ <span class="question-value">{{questions}}</span> có phiên âm ra sao?
+                               <!--  <div class="sound-alphabet content-music-alphabet" ng-click="playAudio(romaji)">
+                                    <div class="music-alphabet glyphicon glyphicon-volume-up"></div>
+                                </div> -->
+                            </div>
+
+                            <div class="answer">
+                                <div ng-repeat="answer in answers" class="list-item card-choice testAlphabet{{answer.id}}" ng-click="chooseAnswer(answer.id, answer.noidung, answer.phatam, $event)">
+                                    <div class="box-card">
+                                        <span>{{answer.noidung}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <!-- RESULT DO TEST -->
+                  <div hidden class="finish-test-alphabet">
+                      <div ng-if="trueAnswer > 0">
+                          Chúc mừng!!!<br/>
+                          Bạn đã làm đúng {{trueAnswer}}/{{size}} câu
+                      </div>
+                      <div ng-if="trueAnswer == 0">
+                          Rất tiếc!!!<br/>
+                          Bạn cần luyện tập thêm.
+                      </div>
+                  </div>
+                   <!-- END RESULT DO TEST -->
+                  <div class="footer-test-alphabet" ng-if="showTest">
+                      <button class="button-test-footer" ng-if="showNext == 0" ng-click="checkTest()" ng-disabled="!buttonDisabled">
+                          Kiểm tra
+                      </button>
+
+                      <button class="button-test-footer" ng-if="showNext == 1" ng-click="next()">
+                          Tiếp tục
+                      </button>
+
+                      <button class="button-test-footer" ng-if="showNext == 2" ng-click="finish()">
+                          Hoàn thành
+                      </button>
+
+                      <button class="button-test-footer" ng-if="showNext == 3" ng-click="benginTest()">
+                          Làm mới
+                      </button>
+                  </div>
+              </div>
+          </div>
+          <div class="box-notify box-notify-correct">
+              Chính xác
+          </div>
+
+          <div class="box-notify box-notify-fails">
+              Chưa chính xác <br>
+              Đáp án: <b>{{ result }}</b>
+          </div>
+      </div>
+  </div>
+  <!-- END TEST -->
+
+  <div ng-if="!isTest" class="sub-right-menu">
+      <div class="alphabet-pronounce">
+          <div class="title-alphabet title-pronounce">
+              <p>Phát âm</p>
+          </div>
+          <div class="content-music-alphabet" ng-click="playAudio(audio)">
+             <!--  <audio controls hidden> 
+                <source ng-src="http://localhost/learn_japanese{{audio}}" type="audio/mpeg">
+              Your browser does not support the audio element.
+              </audio> -->
+              <div class="music-alphabet glyphicon glyphicon-volume-up"></div>
+          </div>
+      </div>
+      <div class="alphabet-write">
+          <div class="title-alphabet title-write">
+              <p>Cách viết</p>
+
+          </div>
+      </div>
+      <div ng-if="showKatakana">
+        <img width="300" height="200" ng-src="http://localhost/learn_japanese/{{hinhanh_kata}}">
+      </div>
+      <div ng-if="!showKatakana">
+        <img width="300" height="200" ng-src="http://localhost/learn_japanese/{{hinhanh_hira}}">
+      </div>
+
+      <ng-kanji-draw data="kanjiAlphabet" class="kanji-draw-test"></ng-kanji-draw>
+      <div class="alphabet-example">
+          <div class="title-alphabet title-example">
+              <p>Ví dụ</p>
+          </div>
+      </div>
+      <!-- <div class="content-example" ng-repeat="example in examples"> -->
+          <div class="item-example{{example.id}}" ng-repeat="example in examples track by $index">
+              <span>{{example.noidung}}</span>
+              <span>{{example.chuhan}}</span>
+              <span>{{example.nghia}}</span>
+          </div>
+      <!-- </div> -->
+  </div>
+</div>
+<audio id="music-alphabet" controls hidden>
+  <source ng-src="" type="audio/mpeg">
+</audio>

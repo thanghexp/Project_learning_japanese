@@ -1,0 +1,83 @@
+<div class="main-content">
+	<div class="subleft-menu">
+	    <div class="subtitle-left-menu">
+	    	<div class="title-left-menu-full">{{title}}</div>
+	    </div>
+	    <div class="content-subleft-menu">
+	    	<div class="item-subleft-menu tabjlpt{{item.id}} tabjp{{$index}}" ng-repeat="item in lessionJLPT track by $index" ng-click="selectTabJLPT(item.id)">
+	            <span class="title-item-subleft-menu">{{ item.ten }}</span>
+	        </div>
+	    </div>
+	</div>
+	<div class="content-submenu jlpt-test">
+	    <div class="jlpt-test-content">
+	    	<div class="header-test-jlpt" ng-if="showNext != 3">
+               <div class="progress progress-test-jlpt">
+                   <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="20">
+                   </div>
+               </div>
+               <div class="test-circle">{{trueAnswer}}/{{size}}</div>
+           </div>
+	    	<div class="jlpt-test-item" ng-if="showNext != 3">
+               <div class="item-test-jlpt-1">
+	            <div class="question">
+			    		{{questions}}
+		    	</div>
+		    	<div class="answer">
+	    			<div ng-repeat="answer in answers track by $index" class="list-item card-choice testjlpt{{$index}}" ng-click="chooseAnswer($index, answer.dapandung, answer.id)">
+	    				<div class="box-card">
+	    					{{answer.dapan}}
+	    				</div>
+		    		</div>
+		    	</div>
+		    	</div>
+		    	<div class="item-test-jlpt-2" hidden>
+	            	<div class="question">
+			    		{{questions}}
+		    	</div>
+		    	<div class="answer">
+	    			<div ng-repeat="answer in answers track by $index" class="list-item card-choice testjlpt{{$index}}" ng-click="chooseAnswer($index, answer.dapandung, answer.id)">
+	    				<div class="box-card">
+	    					{{answer.dapan}}
+	    				</div>
+		    		</div>
+		    	</div>
+		    	</div>
+		    </div>
+		    <div hidden class="finish-test-jlpt">
+		    	 <div ng-if="trueAnswer > 0"> 
+               Chúc mừng!!!<br/>
+               Bạn đã làm đúng {{trueAnswer}}/{{size}} câu
+           </div>
+           <div ng-if="trueAnswer == 0">
+               Rất tiếc!!!<br/>
+               Bạn cần luyện tập thêm.
+           </div>
+		    </div>
+		    <div class="footer-test-jlpt">
+               <button class="button-test-footer" ng-if="showNext == 0" ng-click="checkTest()" ng-disabled="!buttonDisabled">
+                   Kiểm tra
+               </button>
+
+               <button class="button-test-footer" ng-if="showNext == 1" ng-click="next()">
+                   Tiếp tục
+               </button>
+
+               <button class="button-test-footer" ng-if="showNext == 2" ng-click="finish()">
+                   Hoàn thành
+               </button>
+               <button class="button-test-footer" ng-if="showNext == 3" ng-click="refresh()">
+                   Làm lại
+               </button>
+           </div>
+	    </div>
+	    <div class="box-notify box-notify-correct">
+           Chính xác
+       </div>
+
+       <div class="box-notify box-notify-fails">
+           Chưa chính xác <br>
+           Đáp án: <b>{{ testAnswer }}</b>
+       </div>
+	</div>
+</div>

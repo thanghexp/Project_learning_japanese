@@ -1,0 +1,227 @@
+"<div class= "main-content "> 
+   <div class= "subleft-menu "> 
+       <div class= "subtitle-left-menu "> 
+           <div class= "title-left-menu ">{{title}}</div> 
+           <div class= "button-left-menu glyphicon glyphicon-list-alt " ng-click= "showFlashCardBasickanji() "></div> 
+       </div> 
+       <div class= "content-subleft-menu "> 
+           <div class= "item-subleft-menu itemLesson{{lesson.id}} lesson{{$index}} " ng-repeat= "lesson in lessonIds track by $index " ng-click= "selectLessonIkanji(lesson.id) "> 
+               <span class= "title-item-subleft-menu ">{{ lesson.ten }}</span> 
+           </div> 
+       </div> 
+   </div> 
+   <div class= "content-submenu " ng-if= "!isFlashCard "> 
+       <div class= "list-ikanji " ng-repeat= "kanji in datas track by $index " ng-click= "viewDetailIKanji(kanji.id) " data-toggle="modal" data-target="#myIKanji"> 
+           <div class= "ikanji-item "> 
+               <div class= "item-number ">{{$index + 1}}</div> 
+               <div class= "ikanji-item-sub "> 
+                   <div class= "reading-kun ">{{ kanji.kunyomi }}</div> 
+                   <div class= "reading-on ">{{ kanji.onyomi }}</div> 
+               </div> 
+           </div> 
+           <div class= "ikanji-content "> 
+               <div class= "basickanji-word "> 
+                   <div class= "item-japanese ">{{ kanji.tu_kanji }}</div> 
+                   <div class= "item-vietnamese ">{{ kanji.nghia }}</div> 
+               </div> 
+               <div class= "basickanji-image "> 
+                   <img class= "figure " ng-src= "http://localhost/learn_japanese/{{kanji.hinhanh}}"></img> 
+                   <div class= "remember " ng-bind-html= "kanji.remember "></div> 
+               </div> 
+           </div> 
+       </div> 
+       <div class= "list-footer "></div> 
+   </div> 
+   <div ng-if= "isFlashCard " class= "flashcard-basickanji "> 
+       <uib-carousel id= "myCarouselKanji "> 
+           <div class= "item-flashcard-basickanji " ng-if= "kanjiFlashCard.length == 0 "> 
+               <div class= "flip-container "> 
+                   <div class= "flipper "> 
+                       <div class= "front flash-box flash-box-front "> 
+                           <div class= "flash-box-item flash-box-after "> 
+                               <h3 class= "word empty-flashcard ">Trống</h3> 
+                           </div> 
+                       </div> 
+                   </div> 
+               </div> 
+           </div> 
+           <uib-slide class= "item-flashcard-basickanji " ng-repeat= "kanjiActive in kanjiFlashCard track by $index " active= "kanjiActive.active " ng-if= "dataAvailable "> 
+               <div class= "flip-container " ng-click= "flip(kanjiActive.id, $event) "> 
+                   <div class= "flipper "> 
+                       <div class= "front flash-box flash-box-front front{{ kanjiActive.id }} "> 
+                           <div class= "stt "> 
+                               {{ $index + 1}}/{{size}} 
+                           </div> 
+                           <span class= "glyphicon glyphicon-hand-right show-box "> 
+                           </span> 
+                           <div class= "flash-box-item flash-box-after "> 
+                               <h3 class= "word ">{{ kanjiActive.word }}</h3> 
+                           </div> 
+                           <div class= "button-register " ng-click= "rememberKanji(kanjiActive, $event) "  
+                           ng-if= "kanjiActive.rememberflashcard != 1 "> 
+                               勉強中 
+                           </div> 
+
+                           <div class= "button-register remember " ng-click= "rememberKanji(kanjiActive, $event) " 
+                           ng-if= "kanjiActive.rememberflashcard == 1 "> 
+                               完了 
+                           </div> 
+                       </div> 
+                       <div class= "back flash-box flash-box-after after{{ kanjiActive.id }} "> 
+                           <div class= "stt "> 
+                               {{$index + 1}}/{{size}} 
+                           </div> 
+                           <span class= "glyphicon glyphicon-hand-left show-box "> 
+                           </span> 
+ 
+                           </button> 
+                           <div class= "flash-box-item ">                         
+                               <div class= "left "> 
+                                   <p class= "word ">{{ kanjiActive.word }}</p> 
+                                   <p class= "mean ">{{ kanjiActive.cn_mean }}</p> 
+                               </div> 
+
+                               <div class= "right "> 
+                                   <p class= "kun ">{{ kanjiActive.kunjomi }}</p> 
+                                   <p class= "on ">{{ kanjiActive.onjomi }}</p> 
+                               </div>   
+
+                               <img class= "img " ng-src= "imgs/ikanji/{{kanjiActive.image}}.jpg "> 
+
+                               <p class= "remember-text " ng-bind-html= "kanjiActive.remember "> 
+                               </p> 
+ 
+                               </img>    
+                           </div> 
+
+                           <div class= "button-register " ng-click= "rememberKanji(kanjiActive, $event) " 
+                           ng-if= "kanjiActive.rememberflashcard != 1 "> 
+                               勉強中 
+                           </div> 
+
+                           <div class= "button-register remember " ng-click= "rememberKanji(kanjiActive, $event) "  
+                           ng-if= "kanjiActive.rememberflashcard == 1 "> 
+                               完了 
+                           </div> 
+                       </div> 
+                   </div> 
+               </div> 
+           </uib-slide> 
+       </uib-carousel> 
+       <div class= "footer-flashcard-basickanji "> 
+           <ul class= "list-radio-button "> 
+               <li> 
+                   <input type= "radio " id= "test1 " name= "radio-group " ng-model= "radio "  
+                   value= "forget " ng-change= "changeTypeFlashCard('forget') "> 
+                   <label for= "test1 ">勉強中</label> 
+               </li> 
+               <li> 
+                   <input type= "radio " id= "test2 " name= "radio-group " ng-model= "radio " 
+                   value= "remember " ng-change= "changeTypeFlashCard('remember') "> 
+                   <label for= "test2 ">完了</label> 
+               </li> 
+               <li> 
+                   <input type= "radio " id= "test3 " name= "radio-group " ng-model= "radio " 
+                   value= "all " ng-change= "changeTypeFlashCard('all') "> 
+                   <label for= "test3 ">全部</label> 
+               </li> 
+           </ul>  
+       </div> 
+   </div> 
+</div> 
+<div ng-if= "detailKanji != null " class= "modal fade in " id= "myIKanji"   role= "dialog"> 
+   <div class= "modal-dialog "> 
+       <div class= "modal-content"> 
+           <div class= "modal-body"> 
+               <div class= "ikanji-header-modal "> 
+                   <div class= "ikanji-title-modal-1 "> 
+                       Từ kanji 
+                   </div> 
+                   <div class= "ikanji-title-modal-2 "> 
+                       Vị trí 
+                   </div> 
+               </div> 
+               <div class= "ikanji-content-modal "> 
+                   <div class= "ikanji-content-modal-1 item-japanese "> 
+                       <span>{{ detailKanji.nghia }}</span> 
+                   </div> 
+                   <div class= "ikanji-content-modal-2 ikanji-id-modal "> 
+                       <span>{{ detailKanji.id }}</span> 
+                   </div> 
+               </div> 
+               <div class= "ikanji-header-modal "> 
+                   <div class= "ikanji-title-modal-1 "> 
+                       Âm hán 
+                   </div> 
+                   <div class= "ikanji-title-modal-2 "> 
+                       Nghĩa 
+                   </div> 
+               </div> 
+               <div class= "ikanji-content-modal "> 
+                   <div class= "ikanji-content-modal-1 "> 
+                       <span>{{detailKanji.nghia}}</span> 
+                   </div> 
+                   <div class= "ikanji-content-modal-2 "> 
+                       <span>{{detailKanji.vi_mean}}</span> 
+                   </div> 
+               </div> 
+               <div class= "ikanji-header-modal "> 
+                   <div class= "ikanji-title-modal-1 "> 
+                       Kunyomi 
+                   </div> 
+                   <div class= "ikanji-title-modal-2 "> 
+                       Onyomi 
+                   </div> 
+               </div> 
+               <div class= "ikanji-content-modal "> 
+                   <div class= "ikanji-content-modal-1 reading-kun "> 
+                       <span>{{detailKanji.kunyomi}}</span> 
+                   </div> 
+                   <div class= "ikanji-content-modal-2 reading-on "> 
+                       <span>{{detailKanji.onyomi}}</span> 
+                   </div> 
+               </div> 
+               <div class= "ikanji-word-modal "> 
+                   <div class= "ikanji-title-modal-word "> 
+                       Cách viết 
+                   </div> 
+                  
+               </div> 
+               <div class= "size-draw-kanji "> 
+                   <img class= "img-detail-kanji " ng-src= "http://localhost/learn_japanese/{{detailKanji.cachviet}}" style="margin: 0px 200px;">
+               </div> 
+               <div class= "ikanji-header-modal "> 
+                   <div class= "ikanji-title-modal-1 "> 
+                       Hình ảnh 
+                   </div> 
+                   <div class= "ikanji-title-modal-2 "> 
+                       Ghi nhớ 
+                   </div> 
+               </div> 
+               <div class= "ikanji-content-modal "> 
+                   <div class= "ikanji-content-modal-1 "> 
+                       <img class= "img-detail-kanji " ng-src= "http://localhost/learn_japanese/{{detailKanji.hinhanh}}"></img> 
+                   </div> 
+                   <div class= "ikanji-content-modal-2 " >{{detailKanji.ghinho}} 
+                   </div> 
+               </div> 
+               <div class= "ikanji-word-modal "> 
+                   <div class= "ikanji-title-modal-word "> 
+                       Ví dụ 
+                   </div> 
+               </div> 
+
+               <div class= "ikanji-note " ng-repeat= "x in note "> 
+                   <div class= "ikanjiItem{{x.id}} " ng-repeat= "example in note track by $index "> 
+                       <span>{{ example.noidung_vidu }}</span>
+                       <span>{{ example.noidung_tiengnhat }}</span> 
+                       <span>{{ example.nghia }}</span> 
+                   </div> 
+               </div> 
+           </div> 
+           <div class= "modal-footer "> 
+               <button type= "button " class= "btn btn-primary " data-dismiss= "modal">Close</button> 
+           </div> 
+       </div> 
+   </div> 
+</div>

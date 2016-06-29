@@ -1,0 +1,254 @@
+<div class="subheader-content row">
+    <div class="title-subheader col-sm-3">Học tiếng nhật</div>
+    <div class="col-sm-9  tab-header">
+        <div class="item-header tabmina{{theloai.id}}" ng-repeat="theloai in theloais" ng-click="selectTabMina(theloai.id)">
+            <a class="title-item-header">{{ theloai.tentheloai }}</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- BEGIN MOBILE -->
+<div class="subheader-content-mobile">
+  <div class="tab-header">
+      <div class="item-header tabmina{{key}}" ng-repeat="(key, value) in lessionName" ng-click="selectTabMina(key)">
+          <a class="title-item-header">{{ value }}</a>
+      </div>
+  </div>
+</div>
+
+
+<!-- END MOBILE -->
+<!-- 
+
+<div class="main-content">
+  <div class="subleft-menu">
+      <div class="subtitle-left-menu">
+      	<div class="title-left-menu-full">{{titleSub}}</div>
+      </div>
+      <div class="content-subleft-menu-mina">
+          <div class="item-subleft-menu itemLesson{{key + 1}}" ng-repeat="(key, value) in lessionId" ng-click="selectLessonMina(key + 1)">
+              <span class="title-item-subleft-menu">{{ value }}</span>
+          </div>
+      </div>
+  </div>
+
+ -->
+
+<div class="main-content">
+  <div class="subleft-menu">
+      <div class="subtitle-left-menu">
+      	<div class="title-left-menu-full">{{ titleSub }}</div>
+      </div>
+      <div class="content-subleft-menu-mina">
+          <div class="item-subleft-menu itemLesson{{lession.id}}" ng-repeat="lession in lessionId" ng-click="selectLessonMina(lession.id)">
+              <span class="title-item-subleft-menu">{{ lession.ten }}</span>
+          </div>
+      </div>
+  </div>
+  <div class="content-submenu">
+  	  <!-- BEGIN TUMOI -->
+      <div ng-if="activeTab == 1" class="kotoba">
+	      	<div class="music-player">
+					<audio controls autoplay="true" id="music-kotoba" ng-src="{{listens}}" type="audio/mpeg">
+					  	<!--<source >-->
+					</audio>
+			</div>
+			<div class="list-kotoba" ng-repeat="kotoba in datas track by $index">
+				<div class="item-number">{{ $index + 1 }}</div>
+				<div class="content-kotoba">
+					<div class="item-japanese">{{ kotoba.tiengnhat }}</div>
+					<div class="item-roumaji" ng-if="kotoba.kanji != ''">
+						{{ kotoba.tuhan }} - {{ kotoba.nghia_han }}
+					</div>
+					<div class="item-vietnamese">{{ kotoba.nghia }}</div>
+				</div>
+			</div>
+		<div class="list-footer"></div>
+		</div>
+		<!-- BEGIN TUMOI -->
+
+		<!-- BEGIN GRAMMAR -->
+		<div ng-if="activeTab == 2" class="grammar">
+      		<div class="list-grammar" ng-repeat="grammar in datas track by $index" ng-click="clickGrammar($event, grammar.id)">
+	  			<div class="item-number">{{$index + 1}}</div>
+	  			<div class="content-grammar">
+	  				<div class="item-japanese">{{ grammar.name }}</div> 	
+	  			</div>			    	
+	  			<div class="toggle-grammar" ng-repeat="content in contents track by $index">
+		    		<div class="nguphaph" ng-if="content.vitri == 'H'" >{{content.noidung}}</div>
+		    		<div class="nguphapc" ng-if="content.vitri == 'C'" >{{content.noidung}}</div>
+		    		<div class="nguphape" ng-if="content.vitri == 'E'" >{{content.noidung}}</div>
+		    		<div class="nguphapt" ng-if="content.vitri == 'T'" >{{content.noidung}}</div>
+		    		<div class="nguphapr" ng-if="content.vitri == 'R'" >{{content.noidung}}</div>
+	  			</div>
+
+
+	    	</div>
+	    	<div class="list-footer"></div>
+		</div>
+		<!-- END GRAMMAR -->
+
+		<!-- BEGIN KAIWA -->
+		<div ng-if="activeTab == 3" class="kaiwa">
+			<!-- {{listens.}} -->
+			<div class="music-player">
+
+				<audio  id="music-kaiwa" controls autoplay="true" ng-src="{{listens}}">
+				</audio>
+			</div>
+  			<div class="list-kaiwa" ng-repeat="kaiwa in datas track by $index">
+	  			<div class="title-kaiwa" ng-if="$index == 0">
+	  				<div class="item-japanese">{{ kaiwa.tieude_tiengnhat }}</div>
+	  				<div class="item-roumaji">{{ kaiwa.tieude_phatam }}</div>
+	  				<div class="item-vietnamese">{{ kaiwa.tieude_nghia }}</div>
+	  			</div>
+	    		<div ng-if="$index">
+	    			<div class="kaiwa-left">
+	    				<div class="item-character">{{ kaiwa.nguoinoi_kanji }}</div>
+	    				<div class="item-c_roumaji">{{ kaiwa.nguoinoi_tuhan }}</div>
+	    			</div>
+	    			<div class="kaiwa-right">
+	    				<div class="item-japanese">{{ kaiwa.noidung_tiengnhat }}</div>
+	    				<div class="item-roumaji" ng-if="kaiwa.j_roumaji != ''">
+	    					{{ kaiwa.noidung_phatam }}
+	    				</div>
+	    				<div class="item-vietnamese">{{ kaiwa.noidung_nghia }}</div>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="list-footer"></div>
+		</div>
+		<!-- END KAIWA -->
+
+		<!-- BEGIN MONDAI -->
+		<div ng-if="activeTab == 4" class="mondai">
+
+		    <div class="main-content">
+	
+				<div class="content-submenu jlpt-test">
+				    <div class="jlpt-test-content">
+				    	<div class="header-test-jlpt" ng-if="showNext != 3">
+			               <div class="progress progress-test-jlpt">
+			                   <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="20">
+			                   </div>
+			               </div>
+			               <div class="test-circle">{{trueAnswer}}/{{size}}</div>
+			           </div>
+				    	<div class="jlpt-test-item" ng-if="showNext != 3">
+			               <div class="item-test-jlpt-1">
+				            <div class="question">
+						    		{{questions}}
+					    	</div>
+					    	<div class="answer">
+				    			<div ng-repeat="answer in answers track by $index" class="list-item card-choice testjlpt{{$index}}" ng-click="chooseAnswer($index, answer.dapandung, answer.id)">
+				    				<div class="box-card">
+				    					{{answer.dapan}}
+				    				</div>
+					    		</div>
+					    	</div>
+					    	</div>
+					    	<div class="item-test-jlpt-2" hidden>
+				            	<div class="question">
+						    		{{questions}}
+					    	</div>
+					    	<div class="answer">
+				    			<div ng-repeat="answer in answers track by $index" class="list-item card-choice testjlpt{{$index}}" ng-click="chooseAnswer($index, answer.dapandung, answer.id)">
+				    				<div class="box-card">
+				    					{{answer.dapan}}
+				    				</div>
+					    		</div>
+					    	</div>
+					    	</div>
+					    </div>
+					    <div hidden class="finish-test-jlpt">
+					    	 <div ng-if="trueAnswer > 0"> 
+			               Chúc mừng!!!<br/>
+			               Bạn đã làm đúng {{trueAnswer}}/{{size}} câu
+			           </div>
+			           <div ng-if="trueAnswer == 0">
+			               Rất tiếc!!!<br/>
+			               Bạn cần luyện tập thêm.
+			           </div>
+					    </div>
+					    <div class="footer-test-jlpt">
+			               <button class="button-test-footer" ng-if="showNext == 0" ng-click="checkTest()" ng-disabled="!buttonDisabled">
+			                   Kiểm tra
+			               </button>
+
+			               <button class="button-test-footer" ng-if="showNext == 1" ng-click="next()">
+			                   Tiếp tục
+			               </button>
+
+			               <button class="button-test-footer" ng-if="showNext == 2" ng-click="finish()">
+			                   Hoàn thành
+			               </button>
+			               <button class="button-test-footer" ng-if="showNext == 3" ng-click="refresh()">
+			                   Làm lại
+			               </button>
+			           </div>
+				    </div>
+				    <div class="box-notify box-notify-correct">
+			           Chính xác
+			       </div>
+
+			       <div class="box-notify box-notify-fails">
+			           Chưa chính xác <br>
+			           Đáp án: <b>{{ testAnswer }}</b>
+			       </div>
+				</div>
+			</div>
+		</div>
+	
+		<!-- END MONDAI -->
+		<div ng-if="activeTab == 6" class="bunkei">
+      	<div class="music-player">
+				<audio controls id="music-bunkei">
+				  	<source ng-src="{{listens}}" type="audio/mpeg">
+				</audio>
+			</div>
+			<div class="list-bunkei" ng-repeat="bunkei in datas track by $index">
+				<div class="item-number">{{$index + 1}}</div>
+				<div class="content-bunkei">
+					<div class="item-japanese">{{ bunkei.bunkei }}</div>
+  				<div class="item-roumaji">{{ bunkei.roumaji }}</div>
+  				<div class="item-vietnamese">{{ bunkei.vi_mean }}</div>
+				</div>
+			</div>
+			<div class="list-footer"></div>
+		</div>
+		
+		<div ng-if="activeTab == 5" class="reibun">
+      	<div class="music-player">
+			<audio controls id="music-reibun">
+			  	<source ng-src="{{listens}}" type="audio/mpeg">
+			</audio>
+		</div>
+  		<div class="list-reibun" ng-repeat="reibun in datas track by $index" ng-if="$index % 2 ==0">
+  			<div class="item-number">{{$index / 2+ 1}}</div>
+  			<div class="content-reibun">
+  				<div class="item-japanese">{{ datas[$index].reibun }}</div>
+  				<div class="item-roumaji">{{ datas[$index].roumaji }}</div>
+  				<div class="item-vietnamese">{{ datas[$index].vi_mean }}</div>
+  				<div class="content-reibun-2">
+    				<div class="item-japanese">{{ datas[$index + 1].reibun }}</div>
+    				<div class="item-roumaji">{{ datas[$index + 1].roumaji }}</div>
+    				<div class="item-vietnamese">{{ datas[$index + 1].vi_mean }}</div>
+  				</div>
+  			</div>
+  		</div>
+  		<div class="list-footer"></div>
+		</div>
+		<div ng-if="activeTab == 6" class="reference">
+			<div class="list-reference" ng-repeat="reference in datas track by $index">
+  			<div class="item-number">{{$index + 1}}</div>
+  			<div class="content-reference">
+  				<div class="item-japanese">{{ reference.japanese }}</div>
+  				<div class="item-roumaji">{{ reference.roumaji }}</div>
+  				<div class="item-vietnamese">{{ reference.vietnamese }}</div>
+  			</div>
+  		</div>
+  		<div class="list-footer"></div>
+		</div>
+  </div>
+</div>
